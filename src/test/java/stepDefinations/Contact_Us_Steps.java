@@ -10,9 +10,11 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.Assert;
 
 public class Contact_Us_Steps {
 
@@ -43,6 +45,10 @@ public class Contact_Us_Steps {
 
         return RandomStringUtils.randomNumeric(length);
     }
+    public String generateRandomString(int length) {
+
+        return RandomStringUtils.randomAlphabetic(length);
+    }
 
     @Given("I access the webdriver university contact us page")
     public void ı_access_the_webdriver_university_contact_us_page() {
@@ -72,17 +78,18 @@ public class Contact_Us_Steps {
     }
     @And("I enter a unique comment")
     public void ı_enter_a_unique_comment() {
-        System.out.println("Test5");
-
+        driver.findElement(By.xpath("//textarea[@name='message']"))
+                .sendKeys("Hello World" + generateRandomString(20));
     }
     @And("I click on the submit button")
     public void ı_click_on_the_submit_button() {
-        System.out.println("Test6");
+        driver.findElement(By.xpath("//input[@value='SUBMIT']")).click();
 
     }
     @Then("I should be presented with a successful contact us submission message")
     public void ı_should_be_presented_with_a_successful_contact_us_submission_message() {
-        System.out.println("Test7");
+        WebElement contactUs_SubmissionMessage = driver.findElement(By.xpath("//div[@id='contact_reply']/h1"));
+        Assert.assertEquals(contactUs_SubmissionMessage.getText(),"Thank You for your Message!");
 
     }
 
